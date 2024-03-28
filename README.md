@@ -27,4 +27,4 @@ nrmse = nrmse_score(y_test, y_pred, y_train.min(), y_train.max())
 
 [print(i) for i in zip(y_test, y_pred)]
 print(f'{nrmse = :.2f}')
-'''
+```
