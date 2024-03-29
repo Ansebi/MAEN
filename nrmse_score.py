@@ -6,7 +6,7 @@ Evaluates such problematic cases as Near-Zero and Flat vectors of target values.
 Requires min and max reference values.
 '''
 
-
+import logging
 import numpy as np
 
 
@@ -30,6 +30,7 @@ def normalize(
 
 def nrmse_score(true: np.array, pred: np.array, min_: float, max_: float):
     '''
+    min_ and max_: float - reference values
     Usage:\n\n
     y_train: np.array = ...  # target values for training\n
     y_test: np.array = ...  # target values for testing\n
@@ -40,13 +41,14 @@ def nrmse_score(true: np.array, pred: np.array, min_: float, max_: float):
     if min_ == max_:
         if not np.abs(true - pred).sum():
             return 0.0
-        err_msg = f'''
+        warning = f'''
         Min -- Max collision: {min_=}, {max_=}.
         If confident that the target values are {min_} only,
         then any other values are infinitely wrong.
         Consider assigning pred = np.ones_like(true) * {min_}.
         '''
-        raise ValueError(err_msg)
+        logging.warning(warning)
+        return None
     if len(true) != len(pred):
         err_msg = f'Length mismatch: {len(true)=}, {len(pred)=}'
         raise ValueError(err_msg)
